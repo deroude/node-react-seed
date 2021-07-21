@@ -1,0 +1,22 @@
+type: object
+properties:
+  id:
+    type: string
+    format: uuid
+  email:
+    description: Email Address
+    type: string
+    format: email
+  lastName:
+    description: Last Name
+    type: string
+  firstName:
+    description: First Name
+    type: string
+  address:
+    description: Address
+    type: string
+  avatar:
+    description: avatar image url
+    type: string
+    format: url  
