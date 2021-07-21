@@ -1,0 +1,33 @@
+{
+  "name": "express-react-seed",
+  "version": "1.0.0",
+  "description": "Express-React-OpenAPI seed",
+  "main": "index.js",
+  "dependencies": {
+
+  },
+  "devDependencies": {
+    "swagger-cli":"^4.0.4",
+    "@openapitools/openapi-generator-cli":"^2.3.7"
+  },
+  "scripts": {
+    "build": "npm run generate:spec && npm run generate:api",
+    "generate:spec": "swagger-cli bundle spec/api.yaml -o api-bundle.yaml -t yaml",
+    "generate:api": "openapi-generator-cli generate -g typescript-redux-query -i api-bundle.yaml -o ./frontend/src/generated"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/deroude/node-react-seed.git"
+  },
+  "keywords": [
+    "express",
+    "react",
+    "openapi"
+  ],
+  "author": "Valentin Raduti",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/deroude/node-react-seed/issues"
+  },
+  "homepage": "https://github.com/deroude/node-react-seed#readme"
+}

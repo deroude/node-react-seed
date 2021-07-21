@@ -1,0 +1,23 @@
+{
+  "name": "express-react-seed-backend",
+  "version": "1.0.0",
+  "description": "Express Backend for the Express-React Seed",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/deroude/node-react-seed.git"
+  },
+  "keywords": [
+    "express",
+    "openapi"
+  ],
+  "author": "Valentin Raduti",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/deroude/node-react-seed/issues"
+  },
+  "homepage": "https://github.com/deroude/node-react-seed#readme"
+}

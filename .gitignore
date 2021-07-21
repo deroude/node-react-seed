@@ -102,3 +102,7 @@ dist
 
 # TernJS port file
 .tern-port
+
+api-bundle.yaml
+openapitools.json
+generated/
