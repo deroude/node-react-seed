@@ -5,10 +5,12 @@
   "main": "index.js",
   "devDependencies": {
     "@openapitools/openapi-generator-cli": "^2.3.7",
+    "lerna": "^4.0.0",
     "swagger-cli": "^4.0.4"
   },
   "scripts": {
-    "build": "npm run generate:spec && npm run generate:api",
+    "lerna:bootstrap": "lerna bootstrap",
+    "lerna:ls": "lerna ls",
     "generate:spec": "swagger-cli bundle spec/api.yaml -o api-bundle.yaml -t yaml",
     "generate:api:frontend": "openapi-generator-cli generate -g typescript-fetch -i api-bundle.yaml -o ./frontend/src/generated",
     "generate:api:backend": "openapi-generator-cli generate -g typescript-angular -i api-bundle.yaml -o ./backend/src/generated --global-property models"
