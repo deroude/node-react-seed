@@ -1,10 +1,14 @@
 import { Router, Request, Response } from "express";
-import { requiredScopes } from 'express-oauth2-bearer';
+import { checkJwt } from "../middleware/auth.middleware";
 
 import { User } from "../generated/model/user";
 
 export const userRouter = Router();
 
-userRouter.get('', requiredScopes('admin'), async (request: Request, response: Response<User[]>) => {
+userRouter.get(
+  "",
+  checkJwt,
+  async (request: Request, response: Response<User[]>) => {
     response.status(200).send([]);
-})
+  }
+);

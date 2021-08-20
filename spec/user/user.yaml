@@ -1,7 +1,6 @@
 get:
   tags:
     - user
-    - order-admin
   summary: Get all users
   operationId: getUsers
   parameters:
