@@ -5,11 +5,6 @@ get:
   operationId: getUsers
   parameters:
     - in: query
-      name: lodge
-      schema:
-        type: integer
-        format: int64
-    - in: query
       name: filter
       schema:
         type: string
