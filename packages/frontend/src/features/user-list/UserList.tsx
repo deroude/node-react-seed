@@ -14,7 +14,7 @@ export function UserList() {
     <div>
       <ul>
         {userList.map((u) => (
-          <li>{u.email}</li>
+          <li key={u.id}>{u.email}</li>
         ))}
       </ul>
     </div>

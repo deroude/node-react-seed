@@ -14,7 +14,8 @@
     "generate:spec": "swagger-cli bundle spec/api.yaml -o api-bundle.yaml -t yaml",
     "generate:api:frontend": "openapi-generator-cli generate -g typescript-rxjs -i api-bundle.yaml -o ./packages/frontend/src/generated",
     "generate:api:backend": "openapi-generator-cli generate -g typescript-angular -i api-bundle.yaml -o ./packages/backend/src/generated --global-property models",
-    "build": "npm run generate:spec && npm run generate:api:frontend && npm run generate:api:backend && lerna run build"
+    "build": "npm run generate:spec && npm run generate:api:frontend && npm run generate:api:backend && lerna run build",
+    "start": "lerna run start --parallel"
   },
   "repository": {
     "type": "git",
