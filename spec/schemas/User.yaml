@@ -13,10 +13,6 @@ properties:
   firstName:
     description: First Name
     type: string
-  address:
-    description: Address
+  status:
+    description: User status
     type: string
-  avatar:
-    description: avatar image url
-    type: string
-    format: url  

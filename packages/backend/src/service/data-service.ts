@@ -16,6 +16,7 @@ export async function createDataAccess() {
       max: Database.poolMax,
     },
     acquireConnectionTimeout: 2000,
+    asyncStackTraces: true
   });
 
   // Verify the connection before proceeding

@@ -27,11 +27,44 @@ export async function up(knex: Knex) {
 
     table.string("lastName").comment(`The User''s last name.`);
 
-    table
-      .boolean("isActive")
-      .comment(`If false, the User is suspended.`)
-      .defaultTo(true);
+    table.string("status").comment(`INACTIVE or ACTIVE`).defaultTo("INACTIVE");
   });
+
+  // Article
+  await knex.schema
+    .withSchema(Database.schema)
+    .createTable("Article", (table) => {
+      const columns = schema(table);
+      columns.primaryUuid();
+
+      table.timestamps(true, true);
+
+      // Fields
+      table.string("title").notNullable().comment(`The Article title`);
+
+      table.string("slug").comment(`A navigation slug`);
+
+      table.text("text").comment(`The Article content`);
+      
+      table
+        .timestamp("publishDate")
+        .comment(`The publish date of the Article`)
+        .notNullable()
+        .defaultTo(knex.fn.now());
+
+      table
+       .string("category")
+       .defaultTo("BLOG")
+
+      // Relationships
+      columns
+        .foreignUuid(
+          "author",
+          { column: "id", table: `${Database.schema}.User` },
+          true
+        )
+        .comment("The User that created the Article.");
+    });
 }
 
 export function down(_knex: Knex) {

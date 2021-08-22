@@ -16,10 +16,6 @@ properties:
     type: string
   text:
     type: string
-  tags:
-    type: string
-  language:
-    type: string
   publishDate:
     type: string
     format: date-time

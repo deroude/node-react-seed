@@ -1,6 +1,11 @@
+
+import dotenv from "dotenv";
+
+dotenv.config();
+
 export namespace Database {
   export const schema = process.env.DATABASE_SCHEMA || "api";
-  export const database = process.env.DATABASE || "postgres";
+  export const database = process.env.DATABASE_NAME || "postgres";
   export const host = process.env.DATABASE_HOST || "localhost";
   export const port = Number(process.env.DATABASE_PORT || "5432");
   export const username = process.env.DATABASE_USERNAME || "postgres";
