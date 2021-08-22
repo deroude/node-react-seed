@@ -1,16 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
-import Typography from "@material-ui/core/Typography";
 import MenuIcon from "@material-ui/icons/Menu";
 import { Link as RouterLink, Switch, Route } from "react-router-dom";
-import Link from "@material-ui/core/Link";
 import { Paper } from "@material-ui/core";
 import { UserList } from "./features/user-list/UserList";
 import { Home } from "./features/home/Home";
+import { Callback, login } from "./features/auth/Auth";
+import { useState } from "react";
+import GuardedRoute from "./GuardedRoute";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -26,8 +27,13 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export default function ButtonAppBar() {
+export default function App() {
   const classes = useStyles();
+  const [user, setUser] = useState<string | null>(null);
+
+  useEffect(() => {
+    setUser(localStorage.getItem("email"));
+  }, []);
 
   return (
     <div className={classes.root}>
@@ -41,10 +47,16 @@ export default function ButtonAppBar() {
           >
             <MenuIcon />
           </IconButton>
-          <Button color="inherit" component={RouterLink} to="/user-list">
+          {user !== null && (
+            <Button color="inherit" component={RouterLink} to="/user-list">
               Users
-          </Button>
-          <Button color="inherit">Login</Button>
+            </Button>
+          )}
+          {user === null && (
+            <Button color="inherit" onClick={() => login()}>
+              Login
+            </Button>
+          )}
         </Toolbar>
       </AppBar>
       <Paper>
@@ -52,9 +64,10 @@ export default function ButtonAppBar() {
           <Route exact path="/">
             <Home />
           </Route>
-          <Route path="/user-list">
+          <GuardedRoute path="/user-list" predicate={() => user !== null}>
             <UserList />
-          </Route>
+          </GuardedRoute>
+          <Route exact path="/callback" component={Callback} />
         </Switch>
       </Paper>
     </div>

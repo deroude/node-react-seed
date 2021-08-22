@@ -41,7 +41,7 @@ export async function main(): Promise<void> {
     OpenApiValidator.middleware({
       apiSpec,
       validateRequests: true, 
-      validateResponses: true,
+      // validateResponses: true,
       ignoreUndocumented: true 
     })
   );

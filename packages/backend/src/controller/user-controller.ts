@@ -35,47 +35,24 @@ export function userController(dataService: Knex): Router {
     }
   );
 
-  userRouter.get(
-    "",
+  userRouter.delete(
+    "/:id",
     checkJwt,
-    async (request: Request, response: Response<User[]>) => {
-      const params: { search: string; page: number; itemsPerPage: number } =
-        request.query as any;
-      try {
-        response
-          .status(200)
-          .send(
-            await userDAO.getUsers(
-              params.search,
-              params.page,
-              params.itemsPerPage
-            )
-          );
-      } catch (err) {
-        console.log(err);
-      }
+    async (request: Request, response: Response<void>) => {
+      const params: { id: string } = request.params as any;
+      await userDAO.deleteUser(params.id);
+      response.status(200);
     }
   );
 
-  userRouter.get(
-    "",
+  userRouter.put(
+    "/:id",
     checkJwt,
-    async (request: Request, response: Response<User[]>) => {
-      const params: { search: string; page: number; itemsPerPage: number } =
-        request.query as any;
-      try {
-        response
-          .status(200)
-          .send(
-            await userDAO.getUsers(
-              params.search,
-              params.page,
-              params.itemsPerPage
-            )
-          );
-      } catch (err) {
-        console.log(err);
-      }
+    async (request: Request, response: Response<User>) => {
+      const params: { id: string } = request.params as any;
+      response
+        .status(200)
+        .send(await userDAO.updateUser(params.id, request.body));
     }
   );
 

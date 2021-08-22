@@ -12,17 +12,51 @@ export function articleController(dataService: Knex): Router {
   articleRouter.get(
     "",
     async (request: Request, response: Response<Article[]>) => {
-      const params: { search: string; page: number; itemsPerPage: number } =
-        request.query as any;
+      const params: {
+        filter: string;
+        category: string;
+        page: number;
+        itemsPerPage: number;
+      } = request.query as any;
       response
         .status(200)
         .send(
           await articleDAO.getBlogArticles(
-            params.search,
+            params.filter,
+            params.category,
             params.page,
             params.itemsPerPage
           )
         );
+    }
+  );
+
+  articleRouter.post(
+    "",
+    checkJwt,
+    async (request: Request, response: Response<Article>) => {
+      response.status(200).send(await articleDAO.addArticle(request.body));
+    }
+  );
+
+  articleRouter.delete(
+    "/:id",
+    checkJwt,
+    async (request: Request, response: Response<void>) => {
+      const params: { id: string } = request.params as any;
+      await articleDAO.deleteArticle(params.id);
+      response.status(200);
+    }
+  );
+
+  articleRouter.put(
+    "/:id",
+    checkJwt,
+    async (request: Request, response: Response<Article>) => {
+      const params: { id: string } = request.params as any;
+      response
+        .status(200)
+        .send(await articleDAO.updateArticle(params.id, request.body));
     }
   );
 

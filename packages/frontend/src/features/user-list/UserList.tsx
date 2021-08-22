@@ -7,7 +7,7 @@ export function UserList() {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(loadUsers({ filter: "" }));
+    dispatch(loadUsers({  }));
   });
 
   return (

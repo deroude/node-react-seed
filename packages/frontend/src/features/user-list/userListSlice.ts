@@ -16,6 +16,17 @@ const api = () =>
   new UserApi(
     new Configuration({
       basePath: process.env.REACT_APP_API_URL || window.location.origin,
+      middleware: [
+        {
+          pre: (req) => {
+            req.headers = {
+              ...(req.headers || {}),
+              Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+            };
+            return req;
+          },
+        },
+      ],
     })
   );
 

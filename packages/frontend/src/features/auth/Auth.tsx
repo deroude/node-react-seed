@@ -1,3 +1,5 @@
+// https://dev.to/kdhttps/appauth-js-integration-in-react-1m3e
+
 import React, { useEffect, useState } from "react";
 import {
   TokenRequest,
@@ -10,7 +12,9 @@ import {
   LocalStorageBackend,
   DefaultCrypto,
   LocationLike,
+  AuthorizationRequest,
 } from "@openid/appauth";
+import jwt from "jwt-decode";
 
 import { BasicQueryStringUtils } from "@openid/appauth";
 
@@ -46,9 +50,8 @@ export const Callback = (props: any) => {
         if (response) {
           console.log(`Authorization Code  ${response.code}`);
 
-          let extras: any = null;
+          let extras: any = {};
           if (request && request.internal) {
-            extras = {};
             extras.code_verifier = request.internal.code_verifier;
           }
 
@@ -62,7 +65,7 @@ export const Callback = (props: any) => {
           });
 
           AuthorizationServiceConfiguration.fetchFromIssuer(
-            process.env.REACT_APP_AUTH_CLIENT_ID!,
+            process.env.REACT_APP_OPENID_ISSUER!,
             new FetchRequestor()
           )
             .then((oResponse) => {
@@ -74,7 +77,21 @@ export const Callback = (props: any) => {
             })
             .then((oResponse) => {
               localStorage.setItem("access_token", oResponse.accessToken);
-              props.history.push("/profile");
+              if (!!oResponse.idToken) {
+                localStorage.setItem("id_token", oResponse.idToken);
+                localStorage.setItem(
+                  "email",
+                  (jwt(oResponse.idToken) as any).email
+                );
+              }
+
+              localStorage.setItem(
+                "expiresAt",
+                new Date(
+                  new Date().getTime() + (oResponse.expiresIn || 0)
+                ).toISOString()
+              );
+              props.history.push("/");
             })
             .catch((oError) => {
               setError(oError);
@@ -112,4 +129,33 @@ export const Callback = (props: any) => {
       </div>
     </div>
   );
+};
+
+const authorizationHandler = new RedirectRequestHandler(
+  new LocalStorageBackend(),
+  new NoHashQueryStringUtils(),
+  window.location,
+  new DefaultCrypto()
+);
+
+export const login = () => {
+  AuthorizationServiceConfiguration.fetchFromIssuer(
+    process.env.REACT_APP_OPENID_ISSUER!,
+    new FetchRequestor()
+  ).then((response) => {
+    const authRequest = new AuthorizationRequest(
+      {
+        client_id: process.env.REACT_APP_AUTH_CLIENT_ID!,
+        redirect_uri: `${window.location.origin}/callback`,
+        scope: `openid profile email ${process.env.REACT_APP_AUTH_SCOPE!}`,
+        response_type: AuthorizationRequest.RESPONSE_TYPE_CODE,
+        state: undefined,
+        extras: { audience: "node-api" },
+        // extras: environment.extra
+      },
+      undefined,
+      true
+    );
+    authorizationHandler.performAuthorizationRequest(response, authRequest);
+  });
 };
