@@ -1,15 +1,16 @@
 import dotenv from "dotenv";
-import path from "path";
 import express, { NextFunction, Request, Response } from "express";
 import cors from "cors";
 import helmet from "helmet";
+import {createConnection} from "typeorm";
+
 import { userController } from "./controller/user-controller";
-import { createDataAccess } from "./service/data-service";
 import { articleController } from "./controller/article-controller";
 import * as OpenApiValidator from "express-openapi-validator";
 import YAML from "yamljs";
 import swaggerUi from "swagger-ui-express";
 import morgan from "morgan";
+import "reflect-metadata";
 
 dotenv.config();
 
@@ -26,7 +27,7 @@ export async function main(): Promise<void> {
 
   const app = express();
 
-  const knex = await createDataAccess();
+  await createConnection();
 
   const apiSpec = "../../api-bundle.yaml";
   /**
@@ -54,8 +55,8 @@ export async function main(): Promise<void> {
    * Routes
    */
 
-  app.use("/user", userController(knex));
-  app.use("/article", articleController(knex));
+  app.use("/user", userController());
+  app.use("/article", articleController());
 
   /**
    * Error Handler

@@ -13,7 +13,7 @@
     "lerna:bootstrap": "lerna bootstrap",
     "lerna:ls": "lerna ls",
     "generate:spec": "swagger-cli bundle spec/api.yaml -o api-bundle.yaml -t yaml",
-    "generate:api": "openapi-generator-cli generate -g typescript-fetch -i api-bundle.yaml -o ./packages/generated --additional-properties=typescriptThreePlus=true && tsc --project tsconfig.openapi.json",
+    "generate:api": "openapi-generator-cli generate -g typescript-fetch -i api-bundle.yaml -o ./packages/generated --additional-properties=typescriptThreePlus=true,withInterfaces=true && tsc --project tsconfig.openapi.json",
     "build": "npm run generate:spec && npm run generate:api && lerna run build",
     "start": "lerna run start --parallel"
   },

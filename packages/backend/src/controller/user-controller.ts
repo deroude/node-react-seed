@@ -1,29 +1,22 @@
 import { Router as RouterCreator, Request, Response, Router } from "express";
 import { checkJwt } from "../middleware/auth.middleware";
 
-import { User } from "../../../generated";;
-import { Knex } from "knex";
-import { getUserDAO } from "../service/user-service";
-
-export function userController(dataService: Knex): Router {
+import { GetUsersRequest, User } from "generated-api";
+import { UserRepository } from "../data/repository/UserRepository";
+export function userController(): Router {
   const userRouter = RouterCreator();
-  const userDAO = getUserDAO(dataService);
+  const userDAO = new UserRepository();
 
   userRouter.get(
     "",
     checkJwt,
-    async (request: Request, response: Response<User[]>) => {
-      const params: { filter: string; page: number; itemsPerPage: number } =
-        request.query as any;
-      response
-        .status(200)
-        .send(
-          await userDAO.getUsers(
-            params.filter,
-            params.page,
-            params.itemsPerPage
-          )
-        );
+    async (request: Request, response: Response<User[] | any>) => {
+      const params: GetUsersRequest = request.query as any;
+      try {
+        response.status(200).send(await userDAO.getUsers(params));
+      } catch (err) {
+        response.status(500).json({error:"An unexpected error has occurred"});
+      }
     }
   );
 
