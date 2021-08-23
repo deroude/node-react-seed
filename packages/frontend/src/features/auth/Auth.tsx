@@ -17,6 +17,7 @@ import {
 import jwt from "jwt-decode";
 
 import { BasicQueryStringUtils } from "@openid/appauth";
+import { FetchParams, RequestContext } from "generated-api";
 
 class NoHashQueryStringUtils extends BasicQueryStringUtils {
   parse(input: LocationLike, useHash: boolean) {
@@ -157,5 +158,20 @@ export const login = () => {
       true
     );
     authorizationHandler.performAuthorizationRequest(response, authRequest);
+  });
+};
+
+export const authHeaderMiddleware = async (
+  req: RequestContext
+): Promise<FetchParams> => {
+  return Promise.resolve({
+    ...req,
+    init: {
+      ...req.init,
+      headers: {
+        ...(req.init.headers || {}),
+        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+      },
+    },
   });
 };

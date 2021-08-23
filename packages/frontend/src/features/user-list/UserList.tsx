@@ -7,8 +7,8 @@ export function UserList() {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(loadUsers({  }));
-  });
+    dispatch(loadUsers({}));
+  }, []);
 
   return (
     <div>

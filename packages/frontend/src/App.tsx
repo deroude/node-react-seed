@@ -12,6 +12,7 @@ import { Home } from "./features/home/Home";
 import { Callback, login } from "./features/auth/Auth";
 import { useState } from "react";
 import GuardedRoute from "./GuardedRoute";
+import { useTranslation } from "react-i18next";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -30,6 +31,7 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function App() {
   const classes = useStyles();
   const [user, setUser] = useState<string | null>(null);
+  const { t } = useTranslation();
 
   useEffect(() => {
     setUser(localStorage.getItem("email"));
@@ -49,12 +51,12 @@ export default function App() {
           </IconButton>
           {user !== null && (
             <Button color="inherit" component={RouterLink} to="/user-list">
-              Users
+              {t("Users")}
             </Button>
           )}
           {user === null && (
             <Button color="inherit" onClick={() => login()}>
-              Login
+              {t("Login")}
             </Button>
           )}
         </Toolbar>

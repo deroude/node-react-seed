@@ -1,5 +1,5 @@
 import { Knex } from "knex";
-import { Article } from "../generated/model/article";
+import { Article } from "../../../generated";
 import { Database } from "./config-service";
 
 export function getArticleDAO(knex: Knex) {

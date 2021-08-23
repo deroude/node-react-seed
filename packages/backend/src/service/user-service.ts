@@ -1,5 +1,5 @@
 import { Knex } from "knex";
-import { User } from "../generated/model/user";
+import { User } from "../../../generated";
 import { Database } from "./config-service";
 
 export function getUserDAO(knex: Knex) {

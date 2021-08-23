@@ -1,7 +1,7 @@
 import { Router as RouterCreator, Request, Response, Router } from "express";
 import { checkJwt } from "../middleware/auth.middleware";
 
-import { User } from "../generated/model/user";
+import { User } from "../../../generated";;
 import { Knex } from "knex";
 import { getUserDAO } from "../service/user-service";
 

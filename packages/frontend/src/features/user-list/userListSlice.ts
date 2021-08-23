@@ -1,6 +1,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../../app/store";
-import { Configuration, GetUsersRequest, User, UserApi } from "../../generated";
+import {
+  Configuration,
+  GetUsersRequest,
+  User,
+  UserApi,
+} from "generated-api";
+import { authHeaderMiddleware } from "../auth/Auth";
 
 export interface UserListState {
   users: User[];
@@ -16,24 +22,13 @@ const api = () =>
   new UserApi(
     new Configuration({
       basePath: process.env.REACT_APP_API_URL || window.location.origin,
-      middleware: [
-        {
-          pre: (req) => {
-            req.headers = {
-              ...(req.headers || {}),
-              Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-            };
-            return req;
-          },
-        },
-      ],
     })
   );
 
 export const loadUsers = createAsyncThunk(
   "user-list/loadUsers",
   async (request: GetUsersRequest) => {
-    return api().getUsers(request).toPromise();
+    return api().withPreMiddleware(authHeaderMiddleware).getUsers(request);
   }
 );
 
